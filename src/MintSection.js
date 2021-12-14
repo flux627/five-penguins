@@ -49,7 +49,7 @@ const Intro = styled.div`
 
 const Paragraph = styled.p`
   font-size: 16px;
-  line-height: 26px;
+  line-height: 28px;
   margin-bottom: 20px;
 `
 
