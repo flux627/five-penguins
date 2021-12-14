@@ -10,7 +10,7 @@ function MintSection() {
         <b>Five Penguins</b> is a generative art series by Gavin Shapiro, designed to fit your Twitter banner. Similar in spirit to generative collections like those found on ArtBlocks, this is first and foremost an art release, and there is no roadmap! Just majestic, endlessly marching penguins. And sometimes bees.
       </Paragraph>
       <Paragraph>
-        The 3,125 squads in this collection consist of <b>every possible combination</b> of 5 different penguin types in 5 different positions (5^5). There is only one of each combination, and the rarity of these combinations is treated like poker hands (so getting five of the same penguin is much rarer than a pair or three-of-a-kind.). Each squad then gets a random background and a chance to spawn with special environmental traits.
+        The 3,125 squads in this collection consist of <b>every possible combination</b> of 5 different penguin types in 5 different positions (5^5). There is only one of each combination, and the rarity of these combinations is treated like poker hands (so getting five of the same penguin is much rarer than a pair or three-of-a-kind). Each squad then gets a random background and a chance to spawn with special environmental traits.
       </Paragraph>
     </Intro>
     <MintPlaceholder disabled>
