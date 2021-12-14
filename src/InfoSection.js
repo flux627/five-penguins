@@ -23,7 +23,7 @@ function InfoSection() {
 
     <SubTitle>Which works count towards the whitelist?</SubTitle>
     <Paragraph>
-      All Gavin Shapiro NFTs (on Ethereum) on Nifty Gateway, SuperRare, and Artifex. If you hold a piece on Nifty Gateway, you must transfer it to your minting wallet before the whitelist snapshot on December 14th at 11:59 pm EST.
+      All Gavin Shapiro NFTs (on Ethereum) on <A href={'https://opensea.io/collection/gavin-shapiro'} rel={'nofollow'} target={'_blank'}>Nifty Gateway</A>, <A href={'https://opensea.io/shapiro500?tab=created'} rel={'nofollow'} target={'_blank'}>SuperRare</A>, and <A href={'https://opensea.io/collection/artifex?search[query]=Gavin%20Shapiro'} rel={'nofollow'} target={'_blank'}>Artifex</A>. If you hold a piece on <A href={'https://opensea.io/shapiro500?tab=created'} rel={'nofollow'} target={'_blank'}>Nifty Gateway</A>, you must transfer it to your minting wallet before the whitelist snapshot on December 14th at 11:59 pm EST.
     </Paragraph>
 
     <SubTitle>Can I have an animated Twitter banner?</SubTitle>
@@ -35,16 +35,16 @@ function InfoSection() {
 
     <Title id={"trait-rarity"}>Trait Rarity</Title>
     <Paragraph>
-      Rarities are split into three main categories: poker hands, environments, and BGs. The poker hand rarities are determined naturally by probability, and the other rarities were designed so that each rarity tier is twice as rare as the next in the list. The hope is that even if you get a common trait in one of these categories, there is still a chance of getting something rare in one of the other two. There is also a 4% chance to get the Palindrome trait, which applies to symmetrical penguin squads.
+      Rarities are split into three main categories: poker hands, environment traits, and BGs. The poker hand rarities are determined naturally by probability, and the other rarities were designed so that each rarity tier is twice as rare as the next in the list. The hope is that even if you get a common trait in one of these categories, there is still a chance of getting something rare in one of the other two. There is also a 4% chance to get the Palindrome trait, which applies to symmetrical penguin squads.
     </Paragraph>
     <SubTitle>Poker Hands</SubTitle>
     <Video src={"/assets/pokerhands.mp4"} autoPlay muted loop playsInline />
-    <SubTitle>Environments</SubTitle>
+    <SubTitle>Environment Traits</SubTitle>
     <Video src={"/assets/environments.mp4"} autoPlay muted loop playsInline />
-    <SubTitle>Standard Backgrounds</SubTitle>
-    <Video src={"/assets/bgs_standard.mp4"} autoPlay muted loop playsInline />
     <SubTitle>Legendary Backgrounds</SubTitle>
     <Video src={"/assets/bgs_legendary.mp4"} autoPlay muted loop playsInline />
+    <SubTitle>Standard Backgrounds</SubTitle>
+    <Video src={"/assets/bgs_standard.mp4"} autoPlay muted loop playsInline />
 
     <Spacer/>
 
@@ -85,6 +85,7 @@ const Paragraph = styled.p`
 
 const Video = styled.video`
   width: 85%;
+  border-radius: 20px;
   
   @media (max-width: 500px) {
     width: 100%;
