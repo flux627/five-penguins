@@ -38,13 +38,13 @@ function InfoSection() {
       Rarities are split into three main categories: poker hands, environments, and BGs. The poker hand rarities are determined naturally by probability, and the other rarities were designed so that each rarity tier is twice as rare as the next in the list. The hope is that even if you get a common trait in one of these categories, there is still a chance of getting something rare in one of the other two. There is also a 4% chance to get the Palindrome trait, which applies to symmetrical penguin squads.
     </Paragraph>
     <SubTitle>Poker Hands</SubTitle>
-    <Video src={"/assets/pokerhands.mp4"} autoPlay muted loop />
+    <Video src={"/assets/pokerhands.mp4"} autoPlay muted loop playsInline />
     <SubTitle>Environments</SubTitle>
-    <Video src={"/assets/environments.mp4"} autoPlay muted loop />
+    <Video src={"/assets/environments.mp4"} autoPlay muted loop playsInline />
     <SubTitle>Standard Backgrounds</SubTitle>
-    <Video src={"/assets/bgs_standard.mp4"} autoPlay muted loop />
+    <Video src={"/assets/bgs_standard.mp4"} autoPlay muted loop playsInline />
     <SubTitle>Legendary Backgrounds</SubTitle>
-    <Video src={"/assets/bgs_legendary.mp4"} autoPlay muted loop />
+    <Video src={"/assets/bgs_legendary.mp4"} autoPlay muted loop playsInline />
 
     <Spacer/>
 
