@@ -86,6 +86,10 @@ const Paragraph = styled.p`
 const Video = styled.video`
   width: 85%;
   border-radius: 20px;
+
+  @media (max-width: 850px) {
+    border-radius: 10px;
+  }
   
   @media (max-width: 500px) {
     width: 100%;
