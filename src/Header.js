@@ -1,53 +1,36 @@
-import React, { useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import { useState } from "react";
+import styled from "styled-components";
 
+const NAV_LINKS = [
+  { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
+  { text: 'Drop Details', href: '#drop-details' },
+  { text: 'Trait Rarity', href: '#trait-rarity' },
+  { text: 'About the Artist', href: '#about-the-artist' },
+]
+
+function makeLinks(styledATag, onClick = () => {}) {
+  const ATag = styled.a`${styledATag.componentStyle.rules[0]}`
+  return NAV_LINKS.map((link) => {
+    if (link.targetBlank) {
+      return <ATag onClick={onClick} href={link.href} target={'_blank'} rel={"nofollow"}>{link.text}</ATag>
+    }
+    return <ATag onClick={onClick} href={link.href}>{link.text}</ATag>
+  })
+}
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <Wrap>
       <TopLinks>
-        <A
-          href={"https://twitter.com/shapiro500"}
-          rel={"nofollow"}
-          target={"_blank"}
-        >
-          Twitter
-        </A>
-        <A href={"#drop-details"}>Drop Details</A>
-        <A href={"#trait-rarity"}>Trait Rarity</A>
-        <A href={"#about-the-artist"}>About the Artist</A>
-        {/*<a href={"#"}>OpenSea</a>*/}
-        {/*<a href={"#"}>Contract</a>*/}
-        {/*<a href={"#"}>FAQs</a>*/}
+        {makeLinks(A)}
       </TopLinks>
       <Nav>
         <HamburgerDiv onClick={() => setIsOpen(!isOpen)}>
           <img width={35} height={35} src="/menu.svg"/>
         </HamburgerDiv>
         <Menu isOpen={isOpen}>
-          <NavItem
-            href="https://twitter.com/shapiro500"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Twitter
-          </NavItem>
-          <NavItem
-            href="#drop-details"
-          >
-            Drop Details
-          </NavItem>
-          <NavItem
-            href="#trait-rarity"
-          >
-            Trait Rarity
-          </NavItem>
-          <NavItem
-            href="#about-the-artist"
-          >
-            About the Artist
-          </NavItem>
+          {makeLinks(NavItem, () => setIsOpen(false))}
         </Menu>
       </Nav>
       <HeaderLoop

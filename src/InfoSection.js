@@ -11,7 +11,9 @@ function InfoSection() {
         opens to the general public. Collectors will also be allowed to mint one
         free squad. To qualify as a collector, you must hold at least one Gavin
         Shapiro piece in your minting wallet during the whitelist snapshot on
-        December 14th at 11:59 pm EST.
+        December 14th at 11:59 pm EST. If you hold a Shapiro piece on Nifty Gateway,
+        then you must link your minting wallet to your Nifty Gateway account by
+        following the instructions <A href={'/assets/nifty-instructions.jpg'} target={'_blank'}>here</A>.
       </Paragraph>
 
       <SubTitle>Minting Information</SubTitle>
@@ -58,9 +60,11 @@ function InfoSection() {
         >
           Artifex
         </A>
-        . If you hold a piece on Nifty Gateway, you must transfer it to your
-        minting wallet before the whitelist snapshot on December 14th at 11:59
-        pm EST.
+        . If you hold a piece on Nifty Gateway, you must make sure you
+        have <A href={'/assets/nifty-instructions.jpg'} target={'_blank'}>linked your minting wallet</A> to
+        your Nifty Gateway account before the whitelist snapshot on December
+        14th at 11:59 pm EST. If you’ve transferred a Shapiro NFT to your minting
+        wallet, that’s fine too, and it will be picked up by the snapshot!
       </Paragraph>
 
       <SubTitle>Can I have an animated Twitter banner?</SubTitle>
@@ -182,7 +186,7 @@ const SubTitle = styled.div`
 
 const Spacer = styled.div`
   width: 0;
-  height: 90px;
+  height: 65px;
 `;
 
 const BlueHighlight = styled.span`
