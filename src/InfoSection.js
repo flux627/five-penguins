@@ -23,7 +23,7 @@ function InfoSection() {
 
     <SubTitle>Which works count towards the whitelist?</SubTitle>
     <Paragraph>
-      All Gavin Shapiro NFTs (on Ethereum) on <A href={'https://opensea.io/collection/gavin-shapiro'} rel={'nofollow'} target={'_blank'}>Nifty Gateway</A>, <A href={'https://opensea.io/shapiro500?tab=created'} rel={'nofollow'} target={'_blank'}>SuperRare</A>, and <A href={'https://opensea.io/collection/artifex?search[query]=Gavin%20Shapiro'} rel={'nofollow'} target={'_blank'}>Artifex</A>. If you hold a piece on <A href={'https://opensea.io/shapiro500?tab=created'} rel={'nofollow'} target={'_blank'}>Nifty Gateway</A>, you must transfer it to your minting wallet before the whitelist snapshot on December 14th at 11:59 pm EST.
+      All Gavin Shapiro NFTs (on Ethereum) on <A href={'https://opensea.io/collection/gavin-shapiro'} rel={'nofollow'} target={'_blank'}>Nifty Gateway</A>, <A href={'https://opensea.io/shapiro500?tab=created'} rel={'nofollow'} target={'_blank'}>SuperRare</A>, and <A href={'https://opensea.io/collection/artifex?search[query]=Gavin%20Shapiro'} rel={'nofollow'} target={'_blank'}>Artifex</A>. If you hold a piece on Nifty Gateway, you must transfer it to your minting wallet before the whitelist snapshot on December 14th at 11:59 pm EST.
     </Paragraph>
 
     <SubTitle>Can I have an animated Twitter banner?</SubTitle>
