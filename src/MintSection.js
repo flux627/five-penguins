@@ -17,9 +17,9 @@ function MintSection() {
       Mint
     </MintPlaceholder>
     <LaunchTime>
-      Snapshot for whitelist will be taken at 11:59 EST on Dec. 14<br/>
-      Pre-sale opens at 12:00 EST on Dec. 16<br/>
-      Public sale opens at 12:00 EST on Dec. 17
+      Snapshot for whitelist will be taken at 11:59 PM EST on Dec. 14<br/>
+      Pre-sale opens at 12:00 PM EST on Dec. 16<br/>
+      Public sale opens at 12:00 PM EST on Dec. 17
     </LaunchTime>
   </Wrap>
 }
