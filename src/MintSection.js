@@ -1,6 +1,18 @@
 import styled from 'styled-components'
+import WhitelistCheck from "./WhitelistCheck";
+import {useState} from "react";
 
 function MintSection() {
+  const [whitelistCheckOpen, setWhitelistCheckOpen] = useState(false)
+
+  function openWhitelistCheckModal() {
+    setWhitelistCheckOpen(true)
+  }
+
+  function closeWhitelistCheckModal() {
+    setWhitelistCheckOpen(false)
+  }
+
   return <Wrap>
     <Title>
       <TitleLeft>FIVE</TitleLeft> <TitleRight>PENGUINS</TitleRight>
@@ -13,14 +25,22 @@ function MintSection() {
         The 3,125 squads in this collection consist of <b>every possible combination</b> of 5 different penguin types in 5 different positions (5^5). There is only one of each combination, and the rarity of these combinations is treated like poker hands (so getting five of the same penguin is much rarer than a pair or three-of-a-kind). Each squad then gets a random background and a chance to spawn with special environmental traits.
       </Paragraph>
     </Intro>
-    <MintPlaceholder disabled>
-      Mint
-    </MintPlaceholder>
+    <ButtonWrap>
+      <MintPlaceholder disabled>
+        Mint
+      </MintPlaceholder>
+      <OpenWhitelistChecker onClick={openWhitelistCheckModal}>
+        Check Whitelist Status
+      </OpenWhitelistChecker>
+    </ButtonWrap>
+
     <LaunchTime>
-      Snapshot for whitelist will be taken at 11:59 PM EST on Dec. 14<br/>
+      Snapshot for whitelist was taken at 11:59 PM EST on Dec. 14<br/>
       Pre-sale opens at 12:00 PM EST on Dec. 16<br/>
       Public sale opens at 12:00 PM EST on Dec. 17
     </LaunchTime>
+
+    <WhitelistCheck modalIsOpen={whitelistCheckOpen} closeModal={closeWhitelistCheckModal} />
   </Wrap>
 }
 
@@ -53,6 +73,12 @@ const Paragraph = styled.p`
   margin-bottom: 20px;
 `
 
+const ButtonWrap = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+`
+
 const MintPlaceholder = styled.button`
   color: inherit;
   font-size: 18px;
@@ -69,6 +95,17 @@ const MintPlaceholder = styled.button`
 const LaunchTime = styled.div`
   margin-top: 20px;
   font-style: italic;
+  margin-bottom: 45px;
+`
+
+const OpenWhitelistChecker = styled.button`
+  color: inherit;
+  background-color: #72A3FF;
+  border-radius: 10px;
+  border-width: 0;
+  padding: 11px; 
+  font-size: 18px;
+  cursor: pointer;
 `
 
 export default MintSection
