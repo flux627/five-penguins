@@ -195,8 +195,8 @@ function MintSection() {
   } else if (saleStatus === 'presale') {
     mintSection = <div>
       <MintTitle>Presale is Live!</MintTitle>
-      <ShowPresale onWhitelist={onWhitelist}>
-        <NoCursorEvents onWhitelist={onWhitelist}>
+      <ShowPresale onWhitelist={onWhitelist || !activeAddress}>
+        <NoCursorEvents onWhitelist={onWhitelist || !activeAddress}>
           {activeAddress ? <Mint onClick={handleMint}>Mint for {formatEther(calculateMintCost())} ETH</Mint>
           : <Mint onClick={connectToWeb3}>Connect Wallet</Mint>}
           <MintCountInput mintCountStr={mintCountStr} setMintCountStr={setMintCountStr} />
@@ -204,7 +204,7 @@ function MintSection() {
           {canClaimFreeMint ? <FreeMint>🎉 Congratulations, you are entitled to 1 free mint!</FreeMint> : null}
         </NoCursorEvents>
       </ShowPresale>
-      <PresaleLimited onWhitelist={onWhitelist}>Presale is limited to whitelisted addresses only.</PresaleLimited>
+      <PresaleLimited onWhitelist={onWhitelist || !activeAddress}>Presale is limited to whitelisted addresses only.</PresaleLimited>
     </div>
   } else if (saleStatus === 'publicSale') {
     mintSection = <div>

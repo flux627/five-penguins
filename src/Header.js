@@ -1,8 +1,14 @@
 import {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ReactComponent as ImageFilesIcon } from './svgs/image-files.svg'
 import {Web3ProviderContext} from "./Web3ProviderContext";
+import {createContractHelper} from "./createContractHelper";
+import FivePenguinsABI from "./artifacts/contracts/FivePenguins.sol/FivePenguins.json";
+import PngModal from "./PngModal";
+
+const fivePengiunsAddress = process.env.REACT_APP_CONTRACT_ADDRESS
+const correctChainId = process.env.REACT_APP_LOCAL_DEV === 'true' ? 1337 : 1
 
 const NAV_LINKS = [
   { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
@@ -24,10 +30,47 @@ function makeLinks(styledATag, onClick = () => {}, className = 'desktopNav') {
 
 
 function Header() {
-  const { connectToWeb3, disconnectFromWeb3, activeAddress } = useContext(Web3ProviderContext)
+  const { connectToWeb3, disconnectFromWeb3, activeAddress, provider, chainId } = useContext(Web3ProviderContext)
   const [isOpen, setIsOpen] = useState(false)
+  const [pngModalOpen, setPngModalOpen] = useState(false)
+  const [ownedTokenIds, setOwnedTokenIds] = useState([])
+
+  const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider, !activeAddress)
+  const onCorrectChain = !chainId || chainId === correctChainId
+
+  useEffect(() => {
+    if (!activeAddress && onCorrectChain) return
+    // getTokensByOwner(activeAddress)
+    getTokensByOwner(activeAddress)
+      .then((result) => {
+        console.log('owned tokens:', result)
+        setOwnedTokenIds(result)
+      })
+  }, [activeAddress, onCorrectChain])
+
+  async function getTokensByOwner(address) {
+    let owners = []
+    const perPage = 800
+    for (let i = 0; i < 4; i++) {
+      const [pageRaw, length] = await fivePenguins.reader.tokenOwners(i * perPage + 1, perPage + 1)
+      const page = pageRaw.slice(0, length)
+      owners = [...owners, ...page]
+      if (length.lt(perPage)) break
+    }
+    return owners.flatMap((a, i) => a === address ? i+1 : []);
+  }
+
+  function openPngModal() {
+    getTokensByOwner(activeAddress)
+    setPngModalOpen(true)
+  }
+
+  function closePngModal() {
+    setPngModalOpen(false)
+  }
 
   const ConnectedAddress = <ConnectedAddressWrap>
+    <IconWrap onClick={openPngModal} ownsTokens={!!ownedTokenIds.length}><ImageFilesIcon style={{verticalAlign: 'middle'}} width={'30px'} height={'30px'}/></IconWrap>
     <_ConnectedAddress>
       <GreenCircle />
       {activeAddress?.slice(0,6)}…{activeAddress?.slice(-4)}
@@ -62,6 +105,7 @@ function Header() {
         loop
         playsInline
       />
+      <PngModal modalIsOpen={pngModalOpen} closeModal={closePngModal} tokenIds={ownedTokenIds} />
     </Wrap>
   );
 }
@@ -157,6 +201,13 @@ const ConnectWalletButton = styled.button`
   margin-left: auto;
 `
 
+const IconWrap = styled.div`
+  ${( { ownsTokens }) => !ownsTokens ? "display: none;" : ""}
+  padding: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+`
+
 const ConnectedAddressWrap = styled.div`
   margin-left: auto;
   display: flex;
@@ -172,6 +223,7 @@ const _ConnectedAddress = styled.div`
   border-radius: 10px;
   font-weight: bold;
   user-select: none;
+  height: 22px;
 `
 
 const GreenCircle = styled.span`
@@ -199,6 +251,7 @@ const Disconnect = styled.div`
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  height: 22px;
 `
 
 export default Header;
