@@ -65,7 +65,9 @@ function MintModal({ modalIsOpen, closeModal, tx, mintedIds, error }) {
           <A onClick={closeModal} fontSize={30} center>Close</A>
         </div>: null}
         {tx && error ? <div>
-          Error! {error.message}
+          The following error occurred while processing your transaction:<br/> {error.message}<br/><br/>
+          If you tried to speed up your transaction, it's possible that your transaction did actually succeed.<br/><br/>
+          <A href={`https://etherscan.io/tx/${tx.hash}`}>Click here to see what happened on EtherScan.</A>
         </div>: null}
       </Wrap>
     </Modal>

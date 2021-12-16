@@ -98,19 +98,12 @@ function MintSection() {
     return priceWei.mul(parseInt(mintCountStr))
   }
 
-  async function wait(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms)
-    })
-  }
-
   async function handleMint() {
     let txHash
     try {
       const tx = await fivePenguins.signer.mint(parseInt(mintCountStr), { value: calculateMintCost() })
       setCurrentTx(tx)
       txHash = tx.hash
-      await wait(5000)
       await tx.wait()
       const txReceipt = await provider.getTransactionReceipt(tx.hash)
       const mintedIds = txReceipt.logs
@@ -225,7 +218,7 @@ function MintSection() {
   }
 
   return <Wrap>
-    {activeAddress ? adminControls : null}
+    {activeAddress && process.env.REACT_APP_LOCAL_DEV === 'true' ? adminControls : null}
     <Title>
       <TitleLeft>FIVE</TitleLeft> <TitleRight>PENGUINS</TitleRight>
     </Title>
