@@ -17,7 +17,7 @@ function WhitelistCheck({ modalIsOpen, closeModal }) {
     if (!(addressToCheck.split('0x')[1]?.length === 40)) {
       return setCheckResultText('Entered address is invalid. Please check and try again.')
     }
-    if (whitelist.includes(addressToCheck)) {
+    if (whitelist.includes(addressToCheck.toLowerCase())) {
       return setCheckResultText('✅ Address is whitelisted!')
     }
     return setCheckResultText('❌ Address is not whitelisted')
