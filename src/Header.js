@@ -1,5 +1,8 @@
-import { useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import {Web3ProviderContext} from "./Web3ProviderContext";
 
 const NAV_LINKS = [
   { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
@@ -8,31 +11,49 @@ const NAV_LINKS = [
   { text: 'About the Artist', href: '#about-the-artist' },
 ]
 
-function makeLinks(styledATag, onClick = () => {}) {
+function makeLinks(styledATag, onClick = () => {}, className = 'desktopNav') {
   const ATag = styled.a`${styledATag.componentStyle.rules[0]}`
   return NAV_LINKS.map((link) => {
     if (link.targetBlank) {
-      return <ATag onClick={onClick} href={link.href} target={'_blank'} rel={"nofollow"}>{link.text}</ATag>
+      return <ATag className={className} onClick={onClick} href={link.href} target={'_blank'} rel={"nofollow"}>{link.text}</ATag>
     }
-    return <ATag onClick={onClick} href={link.href}>{link.text}</ATag>
+    return <ATag className={className} onClick={onClick} href={link.href}>{link.text}</ATag>
   })
 }
 
+
+
 function Header() {
+  const { connectToWeb3, disconnectFromWeb3, activeAddress } = useContext(Web3ProviderContext)
   const [isOpen, setIsOpen] = useState(false)
+
+  const ConnectedAddress = <ConnectedAddressWrap>
+    <_ConnectedAddress>
+      <GreenCircle />
+      {activeAddress?.slice(0,6)}…{activeAddress?.slice(-4)}
+    </_ConnectedAddress>
+    <Disconnect onClick={disconnectFromWeb3}>✖</Disconnect>
+  </ConnectedAddressWrap>
+
+  const ConnectOrConnectedAddress = activeAddress ?
+    [ConnectedAddress]
+    : <ConnectWalletButton onClick={connectToWeb3}>Connect Wallet</ConnectWalletButton>
+
+
   return (
     <Wrap>
       <TopLinks>
+        <Nav>
+          <HamburgerDiv onClick={() => setIsOpen(!isOpen)}>
+            <img width={35} height={35} src="/menu.svg"/>
+          </HamburgerDiv>
+          <Menu isOpen={isOpen}>
+            {makeLinks(NavItem, () => setIsOpen(false), 'mobileNav')}
+          </Menu>
+        </Nav>
         {makeLinks(A)}
+        {ConnectOrConnectedAddress}
       </TopLinks>
-      <Nav>
-        <HamburgerDiv onClick={() => setIsOpen(!isOpen)}>
-          <img width={35} height={35} src="/menu.svg"/>
-        </HamburgerDiv>
-        <Menu isOpen={isOpen}>
-          {makeLinks(NavItem, () => setIsOpen(false))}
-        </Menu>
-      </Nav>
       <HeaderLoop
         src={"/assets/header_loop.mp4"}
         poster={"/assets/placeholder.png"}
@@ -52,15 +73,20 @@ const Wrap = styled.div`
 
 const TopLinks = styled.div`
   font-size: 18px;
-  padding: 30px 20px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 5%;
+  height: 73px;
 
   @media (max-width: 624px) {
-    visibility: hidden;
-    height: 10px;
-    padding: 0;
+      padding: 0 20px;
+    }
+
+  .desktopNav {
+    @media (max-width: 624px) {
+      display: none;
+    }
   }
 `;
 
@@ -69,7 +95,7 @@ const HeaderLoop = styled.video`
   border-radius: 20px;
   margin-bottom: 15px;
   @media (max-width: 624px) {
-    margin-top: 25px;
+    margin-top: 15px;
   }
 `;
 
@@ -90,7 +116,7 @@ const Nav = styled.div`
   }
 `;
 
-const HamburgerDiv = styled.a`
+const HamburgerDiv = styled.div`
   cursor: pointer;
   padding: 20px 15px 0px 0px;
 `;
@@ -106,7 +132,8 @@ const Menu = styled.div`
   overflow: hidden;
   flex-direction: column;
   width: 94%;
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-left: -20px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   max-height: ${( { isOpen }) => isOpen ? "300px" : "0px"};
@@ -118,5 +145,60 @@ const NavItem = styled.a`
   font-weight: 400;
   padding: 20px 0px 20px 15px;
 `;
+
+const ConnectWalletButton = styled.button`
+  color: inherit;
+  background-color: #72A3FF;
+  border-radius: 10px;
+  border-width: 0;
+  padding: 11px; 
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: auto;
+`
+
+const ConnectedAddressWrap = styled.div`
+  margin-left: auto;
+  display: flex;
+`
+
+const _ConnectedAddress = styled.div`
+  background: #5077ab;
+  padding: 5px 10px 3px 7px;
+  border-radius: 0px;
+  font-family: "Monaco", monospace;
+  font-size: 16px;
+  border: 2px solid #72a3ff91;
+  border-radius: 10px;
+  font-weight: bold;
+  user-select: none;
+`
+
+const GreenCircle = styled.span`
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  background: #4ceb4c;
+  border-radius: 10px;
+  margin: 0 10px 0 5px;
+`
+
+const Disconnect = styled.div`
+  margin-left: 10px;
+  background: #be3c3c;
+  padding: 5px 7px 5px 7px;
+  border-radius: 0px;
+  font-family: monospace;
+  border: 2px solid #ff7272ba;
+  border-radius: 10px;
+  width: 22px;
+  text-align: center;
+  font-size: 26px;
+  line-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+`
 
 export default Header;

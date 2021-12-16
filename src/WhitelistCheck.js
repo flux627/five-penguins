@@ -33,7 +33,7 @@ function WhitelistCheck({ modalIsOpen, closeModal }) {
       ariaHideApp={false}
       contentElement={(props, children) => <ModalElement {...props}>{children}</ModalElement>}
       overlayElement={(props, contentElement) => <OverlayElement {...props}>{contentElement}</OverlayElement>}
-      contentLabel="Example Modal"
+      contentLabel="Whitelist Check"
     >
       <ModalTitle>Whitelist Check</ModalTitle>
       <ModalInstructions>Submit your address below to check your whitelist status:</ModalInstructions>

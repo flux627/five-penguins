@@ -3,14 +3,17 @@ import './App.css'
 import Header from "./Header";
 import MintSection from "./MintSection";
 import InfoSection from "./InfoSection";
+import {Web3Provider} from "./Web3ProviderContext";
 
 function App() {
   return (
-    <Wrap>
-      <Header />
-      <MintSection />
-      <InfoSection />
-    </Wrap>
+    <Web3Provider>
+      <Wrap>
+        <Header />
+        <MintSection />
+        <InfoSection />
+      </Wrap>
+    </Web3Provider>
   )
 }
 

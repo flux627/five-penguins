@@ -995,9 +995,11 @@ contract FivePenguins is ERC721, ReentrancyGuard {
     uint256 public price = 1 ether / 20;
     bool public presaleEnabled;
     bool public saleEnabled;
+    mapping (address => bool) public admins;
+    bool private adminsLocked;
     mapping (address => bool) public whitelist;
     mapping (address => bool) public freeMintClaimed;
-    uint256 public totalMinted;
+    uint256 public totalSupply;
     string private uri;
 
     constructor(string memory name, string memory symbol, string memory _uri) ERC721(name, symbol) {
@@ -1017,11 +1019,15 @@ contract FivePenguins is ERC721, ReentrancyGuard {
         return whitelist[claimer] && !freeMintClaimed[claimer];
     }
 
+    function soldOut() public view returns (bool) {
+        return totalSupply >= MAX_SUPPLY;
+    }
+
     function mint(uint256 amountToBuy) public payable nonReentrant {
         bool onWhitelist = whitelist[msg.sender];
         bool _canClaimFreeMint = onWhitelist && !freeMintClaimed[msg.sender];
 
-        require(totalMinted < MAX_SUPPLY, "No more penguins!");
+        require(totalSupply < MAX_SUPPLY, "No more penguins!");
 
         if (!saleEnabled && presaleEnabled) {
             require(onWhitelist, "Address not whitelisted");
@@ -1040,8 +1046,8 @@ contract FivePenguins is ERC721, ReentrancyGuard {
         }
 
         for (uint256 tokensLeftToMint = amountToBuy; tokensLeftToMint != 0; tokensLeftToMint--) {
-            _mint(msg.sender, ++totalMinted);
-            if (totalMinted == MAX_SUPPLY) {
+            _mint(msg.sender, ++totalSupply);
+            if (totalSupply == MAX_SUPPLY) {
                 saleEnabled = false;
                 presaleEnabled = false;
                 if (_canClaimFreeMint && (amountToBuy - tokensLeftToMint - 1) > 0) {
@@ -1055,44 +1061,65 @@ contract FivePenguins is ERC721, ReentrancyGuard {
     }
 
     function withdraw() public {
-        require(msg.sender == owner, "Only owner can withdraw");
-        payable(msg.sender).transfer(address(this).balance);
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can withdraw");
+        payable(owner).transfer(address(this).balance);
     }
 
     function setPresaleEnabled(bool to) public {
-        require(msg.sender == owner, "Only owner can change presale state");
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can change presale state");
         require(!saleEnabled, "Cannot change presale state while public sale is live");
-        require(totalMinted != MAX_SUPPLY, "Cannot change presale state after selling out");
+        require(totalSupply != MAX_SUPPLY, "Cannot change presale state after selling out");
         presaleEnabled = to;
     }
 
     function setSaleEnabled(bool to) public {
-        require(msg.sender == owner, "Only owner can change sale state");
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can change sale state");
         require(presaleEnabled, "Presale must be live in order to turn on public sale");
-        require(totalMinted != MAX_SUPPLY, "Cannot change sale state after selling out");
+        require(totalSupply != MAX_SUPPLY, "Cannot change sale state after selling out");
         saleEnabled = to;
     }
 
     function setPrice(uint256 to) public {
-        require(msg.sender == owner, "Only owner can set prices");
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can set prices");
         price = to;
     }
 
     function addToWhitelist(address[] calldata addresses) public {
-        require(msg.sender == owner, "Only owner can add to whitelist");
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can add to whitelist");
         for (uint i = 0; i < addresses.length; i++) {
             whitelist[addresses[i]] = true;
         }
     }
 
     function removeFromWhitelist(address[] calldata addresses) public {
-        require(msg.sender == owner, "Only owner can remove from whitelist");
+        require(msg.sender == owner || admins[msg.sender], "Only owner or admin can remove from whitelist");
         for (uint i = 0; i < addresses.length; i++) {
             whitelist[addresses[i]] = false;
         }
     }
 
-    function owners(uint256 startAt, uint256 limit) public view returns (address[] memory, uint256) {
+    function addAdmins(address[] calldata addresses) public {
+        require(msg.sender == owner, "Only owner can add administrators");
+        require(!adminsLocked, "Cannot change administrators while locked");
+        for (uint i = 0; i < addresses.length; i++) {
+            admins[addresses[i]] = true;
+        }
+    }
+
+    function removeAdmins(address[] calldata addresses) public {
+        require(msg.sender == owner, "Only owner can remove administrators");
+        require(!adminsLocked, "Cannot change administrators while locked");
+        for (uint i = 0; i < addresses.length; i++) {
+            admins[addresses[i]] = false;
+        }
+    }
+
+    function setAdminsLock(bool to) public {
+        require(msg.sender == owner, "Only owner can set admin lock state");
+        adminsLocked = to;
+    }
+
+    function tokenOwners(uint256 startAt, uint256 limit) public view returns (address[] memory, uint256) {
         address[] memory addresses = new address[](limit);
         uint256 length = 0;
         for (uint256 i = 0; i < limit && i + startAt < MAX_SUPPLY; i++) {
@@ -1105,13 +1132,13 @@ contract FivePenguins is ERC721, ReentrancyGuard {
 //    function paginateOwners(uint256 itemsPerPage, uint256 page, bool firstIdIs1, uint256 offset) public view returns (address[] memory, uint256, bool) {
 //        require(page != 0, "First page is 1, not 0");
 //        uint256 startAt = (page - 1) * itemsPerPage + firstIdIs1 + offset;
-//        uint256 arrLength = startAt + itemsPerPage <= totalMinted ? itemsPerPage : totalMinted - startAt;
+//        uint256 arrLength = startAt + itemsPerPage <= totalSupply ? itemsPerPage : totalSupply - startAt;
 //        address[] memory addresses = new address[](arrLength);
 //        bool hasMorePages = true;
 //        for (uint256 i = 0; i < arrLength; i++) {
 //            addresses[i] = ownerOf(startAt + i);
 //        }
-//        if (arrLength < itemsPerPage || startAt + itemsPerPage == totalMinted) {
+//        if (arrLength < itemsPerPage || startAt + itemsPerPage == totalSupply) {
 //            hasMorePages = false;
 //        }
 //        return (addresses, hasMorePages);
