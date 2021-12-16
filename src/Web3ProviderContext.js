@@ -3,6 +3,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 import {readOnlyProvider} from "./readOnlyProvider";
+import {walletLinkProviderOptions} from "./walletLinkProviderOptions";
 
 
 export const Web3ProviderContext = createContext({
@@ -19,7 +20,8 @@ const providerOptions = {
     options: {
       infuraId: "d2d5f8648ea54267b8c4c10a3f055d67" // required
     }
-  }
+  },
+  ...walletLinkProviderOptions,
 };
 
 const web3Modal = new Web3Modal({
