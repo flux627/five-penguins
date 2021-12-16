@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+const keys = require("./keys.json")
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -22,9 +23,22 @@ module.exports = {
     artifacts: './src/artifacts',
   },
   networks: {
+    localhost: {
+      url: "http://127.0.0.1:8545"
+    },
+
     hardhat: {
       chainId: 1337
-    }
-  }
+    },
+
+    ethereum: {
+      chainId: 1,
+      url: keys.rpc,
+      gasPrice: 100e9,
+      accounts: {
+        mnemonic: keys.mnemonic
+      }
+    },
+  },
 };
 
