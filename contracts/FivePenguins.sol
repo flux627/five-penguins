@@ -1122,25 +1122,10 @@ contract FivePenguins is ERC721, ReentrancyGuard {
     function tokenOwners(uint256 startAt, uint256 limit) public view returns (address[] memory, uint256) {
         address[] memory addresses = new address[](limit);
         uint256 length = 0;
-        for (uint256 i = 0; i < limit && i + startAt < MAX_SUPPLY; i++) {
+        for (uint256 i = 0; i < limit && i + startAt <= totalSupply; i++) {
             addresses[i] = ownerOf(startAt + i);
             length++;
         }
         return (addresses, length);
     }
-
-//    function paginateOwners(uint256 itemsPerPage, uint256 page, bool firstIdIs1, uint256 offset) public view returns (address[] memory, uint256, bool) {
-//        require(page != 0, "First page is 1, not 0");
-//        uint256 startAt = (page - 1) * itemsPerPage + firstIdIs1 + offset;
-//        uint256 arrLength = startAt + itemsPerPage <= totalSupply ? itemsPerPage : totalSupply - startAt;
-//        address[] memory addresses = new address[](arrLength);
-//        bool hasMorePages = true;
-//        for (uint256 i = 0; i < arrLength; i++) {
-//            addresses[i] = ownerOf(startAt + i);
-//        }
-//        if (arrLength < itemsPerPage || startAt + itemsPerPage == totalSupply) {
-//            hasMorePages = false;
-//        }
-//        return (addresses, hasMorePages);
-//    }
 }

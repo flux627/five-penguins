@@ -35,9 +35,8 @@ function MintSection() {
   console.log('sale status:', saleStatus)
   console.log('canClaimFreeMint:', canClaimFreeMint)
 
-  useEffect(() => {
-    if (!onCorrectChain) return
-    Promise.all([
+  function update() {
+    return Promise.all([
       fivePenguins.reader.totalSupply(),
       fivePenguins.reader.presaleEnabled(),
       fivePenguins.reader.saleEnabled(),
@@ -54,6 +53,15 @@ function MintSection() {
         setSaleStatus('prelaunch')
       }
     })
+  }
+
+  useEffect(() => {
+    if (!onCorrectChain) return
+    update()
+  }, [])
+
+  useEffect(() => {
+    setInterval(update, 10000)
   }, [])
 
   useEffect(() => {
@@ -115,7 +123,7 @@ function MintSection() {
         setCurrentMintError(err)
       }
     }
-    const [totalSupply, soldOut, _canClaimFreeMint] = await Promise.all([
+    const [totalSupply, _canClaimFreeMint, soldOut] = await Promise.all([
       fivePenguins.reader.totalSupply(),
       fivePenguins.reader.canClaimFreeMint(activeAddress),
       fivePenguins.reader.soldOut(),
@@ -191,22 +199,25 @@ function MintSection() {
       Five Penguins is sold out.
       <A href={`https://opensea.io/collection/${process.env.REACT_APP_OPENSEA_USERNAME}`}>Head over to OpenSea for a chance at secondary sales.</A>
     </div>
-  } else if (!activeAddress) {
-    mintSection = <div><Mint onClick={connectToWeb3}>Connect Wallet</Mint></div>
   } else if (saleStatus === 'presale') {
     mintSection = <div>
       <MintTitle>Presale is Live!</MintTitle>
       <ShowPresale onWhitelist={onWhitelist}>
-        <Mint onClick={handleMint}>Mint for {formatEther(calculateMintCost())} ETH</Mint>
-        <MintCountInput mintCountStr={mintCountStr} setMintCountStr={setMintCountStr} />
-        <MintCount>{totalMinted} / 3125</MintCount>
-        {canClaimFreeMint ? <FreeMint>🎉 Congratulations, you are entitled to 1 free mint!</FreeMint> : null}
-      </ShowPresale >
+        <NoCursorEvents onWhitelist={onWhitelist}>
+          {activeAddress ? <Mint onClick={handleMint}>Mint for {formatEther(calculateMintCost())} ETH</Mint>
+          : <Mint onClick={connectToWeb3}>Connect Wallet</Mint>}
+          <MintCountInput mintCountStr={mintCountStr} setMintCountStr={setMintCountStr} />
+          <MintCount>{totalMinted} / 3125</MintCount>
+          {canClaimFreeMint ? <FreeMint>🎉 Congratulations, you are entitled to 1 free mint!</FreeMint> : null}
+        </NoCursorEvents>
+      </ShowPresale>
+      <PresaleLimited onWhitelist={onWhitelist}>Presale is limited to whitelisted addresses only.</PresaleLimited>
     </div>
   } else if (saleStatus === 'publicSale') {
     mintSection = <div>
       <MintTitle>Public Sale is Live!</MintTitle>
-      <Mint onClick={handleMint}>Mint for {formatEther(calculateMintCost())} ETH</Mint>
+      {activeAddress ? <Mint onClick={handleMint}>Mint for {formatEther(calculateMintCost())} ETH</Mint>
+        : <Mint onClick={connectToWeb3}>Connect Wallet</Mint>}
       <MintCountInput mintCountStr={mintCountStr} setMintCountStr={setMintCountStr} />
       <MintCount>{totalMinted} / 3125</MintCount>
       {canClaimFreeMint ? <FreeMint>🎉 Congratulations, you are entitled to 1 free mint!</FreeMint> : null}
@@ -344,12 +355,34 @@ const ShowPresale = styled.div`
     if (!onWhitelist) {
       return css`
         opacity: 0.7;
-        pointer-events: none;
         cursor: not-allowed;
+        display: inline-block;
       `
     }
   }}
 `
+const NoCursorEvents = styled.div`
+  ${({onWhitelist}) => {
+    if (!onWhitelist) {
+      return css`
+          pointer-events: none
+        `
+    }
+  }}
+`
+
+const PresaleLimited = styled.div`
+  margin-top: 12px;
+  font-style: italic;
+  ${({onWhitelist}) => {
+    if (onWhitelist) {
+      return css`
+        display: none;
+      `
+    }
+  }}
+`
+
 const A = styled.a`
   ${({ fontSize }) => fontSize ? `font-size: ${fontSize}px;` : ''}
   ${({ center }) => center ? `display: block; text-align: center;` : ''}

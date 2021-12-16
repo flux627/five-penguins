@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import Modal from 'react-modal';
 
 
@@ -52,7 +52,7 @@ function MintModal({ modalIsOpen, closeModal, tx, mintedIds, error }) {
     >
       <Wrap>
         {tx && !mintedIds.length && !error ? <div>
-          <ModalTitle>Minting...</ModalTitle>
+          <ModalTitle pulse>Minting...</ModalTitle>
         </div> : null}
         {tx && mintedIds.length && !error ? <div>
           <ModalTitle>Minted!</ModalTitle>
@@ -74,7 +74,7 @@ function MintModal({ modalIsOpen, closeModal, tx, mintedIds, error }) {
 
 const Wrap = styled.div`
   width: 100%;
-  margin-bottom: 35px;
+  /* margin-bottom: 35px; */
 `;
 
 const ModalElement = styled.div`
@@ -125,12 +125,30 @@ const ModalTitle = styled.div`
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 30px;
+    ${({ pulse }) => pulse ? css`
+      text-align: center;
+      margin-bottom: 0;
+      animation-name: ${Pulse};
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    ` : ''}
+`
+
+const Pulse = keyframes`
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.075)
+  }
 `
 
 const A = styled.a`
   ${({ fontSize }) => fontSize ? `font-size: ${fontSize}px;` : ''}
   ${({ center }) => center ? `display: block; text-align: center;` : ''}
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 const VideoTitle = styled.div`
