@@ -10,23 +10,6 @@ import PngModal from "./PngModal";
 const fivePengiunsAddress = process.env.REACT_APP_CONTRACT_ADDRESS
 const correctChainId = process.env.REACT_APP_LOCAL_DEV === 'true' ? 1337 : 1
 
-const NAV_LINKS = [
-  { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
-  { text: 'Drop Details', href: '#drop-details' },
-  { text: 'Trait Rarity', href: '#trait-rarity' },
-  { text: 'About the Artist', href: '#about-the-artist' },
-]
-
-function makeLinks(styledATag, onClick = () => {}, className = 'desktopNav') {
-  const ATag = styled.a`${styledATag.componentStyle.rules[0]}`
-  return NAV_LINKS.map((link) => {
-    if (link.targetBlank) {
-      return <ATag className={className} onClick={onClick} href={link.href} target={'_blank'} rel={"nofollow"}>{link.text}</ATag>
-    }
-    return <ATag className={className} onClick={onClick} href={link.href}>{link.text}</ATag>
-  })
-}
-
 
 
 function Header() {
@@ -35,11 +18,38 @@ function Header() {
   const [pngModalOpen, setPngModalOpen] = useState(false)
   const [ownedTokenIds, setOwnedTokenIds] = useState([])
 
+  const NAV_LINKS = [
+    { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
+    { text: 'OpenSea', href: 'https://opensea.com/FivePenguins', targetBlank: true },
+    { text: 'My Squads', href: '#', onClick: openPngModal, hide: !ownedTokenIds.length },
+  ]
+
+  function makeLinks(styledATag, onClick = () => {}, className = 'desktopNav') {
+    const ATag = styled.a`${styledATag.componentStyle.rules[0]}`
+    return NAV_LINKS.map((link) => {
+      if (link.hide) return null
+      if (link.onClick) {
+        const originalOnClick = onClick
+        onClick = () => {
+          originalOnClick()
+          link.onClick()
+        }
+      }
+      if (link.targetBlank) {
+        return <ATag className={className} onClick={onClick} href={link.href} target={'_blank'} rel={"nofollow"}>{link.text}</ATag>
+      }
+      return <ATag className={className} onClick={onClick} href={link.href}>{link.text}</ATag>
+    })
+  }
+
   const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider, !activeAddress)
   const onCorrectChain = !chainId || chainId === correctChainId
 
   useEffect(() => {
-    if (!activeAddress && onCorrectChain) return
+    if (!activeAddress || !onCorrectChain) {
+      setOwnedTokenIds([])
+      return
+    }
     // getTokensByOwner(activeAddress)
     getTokensByOwner(activeAddress)
       .then((result) => {
@@ -70,7 +80,6 @@ function Header() {
   }
 
   const ConnectedAddress = <ConnectedAddressWrap>
-    <IconWrap onClick={openPngModal} ownsTokens={!!ownedTokenIds.length}><ImageFilesIcon style={{verticalAlign: 'middle'}} width={'30px'} height={'30px'}/></IconWrap>
     <_ConnectedAddress>
       <GreenCircle />
       {activeAddress?.slice(0,6)}…{activeAddress?.slice(-4)}

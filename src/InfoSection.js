@@ -70,7 +70,7 @@ function InfoSection() {
       <SubTitle>Can I have an animated Twitter banner?</SubTitle>
       <Paragraph>
         Not currently! But you can get a still image of your squad to use as
-        your banner by clicking <A href={"#"}>here</A> once minting is live.
+        your banner by clicking "My Squads" in the top menu.
       </Paragraph>
 
       <Spacer />
