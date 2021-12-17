@@ -4,11 +4,16 @@ import Modal from 'react-modal';
 
 
 const pngIpfsHash = 'QmWWkFftxvgySym6LGRMyYVrBZgWKezbS6xBNCeGbBtJor'
+const mp4IpfsHash = 'QmeWw2zmLoVEcJgw7rGmjVnm5sEbmY5Yk4oGwkekNe38Ap'
 
 function PngModal({ modalIsOpen, closeModal, tokenIds }) {
 
   function pngSrc(tokenId) {
     return `https://ipfs.io/ipfs/${pngIpfsHash}/${tokenId}.png`
+  }
+
+  function mp4Src(tokenId) {
+    return `https://ipfs.io/ipfs/${mp4IpfsHash}/${tokenId}.mp4`
   }
 
   return (
@@ -29,7 +34,7 @@ function PngModal({ modalIsOpen, closeModal, tokenIds }) {
         <PngGallery>
             {tokenIds.map((tokenId) => {
               return <div>
-                <PngTitle>Five Penguins #{tokenId}</PngTitle>
+                <PngTitle>Five Penguins #{tokenId} (<A href={mp4Src(tokenId)} target={'_blank'} rel={'nofollow'}>Download MP4</A>)</PngTitle>
                 <Img alt={`Five Penguins #${tokenId}`} src={pngSrc(tokenId)} />
               </div>
             })}
