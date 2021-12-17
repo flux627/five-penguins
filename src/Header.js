@@ -10,8 +10,6 @@ import PngModal from "./PngModal";
 const fivePengiunsAddress = process.env.REACT_APP_CONTRACT_ADDRESS
 const correctChainId = process.env.REACT_APP_LOCAL_DEV === 'true' ? 1337 : 1
 
-
-
 function Header() {
   const { connectToWeb3, disconnectFromWeb3, activeAddress, provider, chainId } = useContext(Web3ProviderContext)
   const [isOpen, setIsOpen] = useState(false)
@@ -21,6 +19,7 @@ function Header() {
   const NAV_LINKS = [
     { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
     { text: 'OpenSea', href: 'https://opensea.io/collection/fivepenguins', targetBlank: true },
+    { text: 'Nifty Gateway', href: 'https://niftygateway.com/marketplace?collectible=0x697e0a5e2a6be117760d192a03fac688e774efcf', targetBlank: true },
     { text: 'My Squads', href: '#', onClick: openPngModal, hide: !ownedTokenIds.length },
   ]
 
