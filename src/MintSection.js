@@ -29,7 +29,7 @@ function MintSection() {
   const [currentMintError, setCurrentMintError] = useState(null)
   const mintModalOpen = !!currentTx
 
-  const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider, !activeAddress)
+  const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider)
   const onCorrectChain = !chainId || chainId === correctChainId
 
   console.log('sale status:', saleStatus)

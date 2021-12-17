@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import {readOnlyProvider} from "./readOnlyProvider";
 
 export function createContractHelper(address, abi, provider, readOnly) {
-  if (readOnly) {
+  if (!provider.getSigner) {
     const contractHelper = {
       reader: new ethers.Contract(address, abi, readOnlyProvider),
     }
