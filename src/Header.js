@@ -20,7 +20,7 @@ function Header() {
 
   const NAV_LINKS = [
     { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
-    { text: 'OpenSea', href: 'https://opensea.com/FivePenguins', targetBlank: true },
+    { text: 'OpenSea', href: 'https://opensea.com/collection/FivePenguins', targetBlank: true },
     { text: 'My Squads', href: '#', onClick: openPngModal, hide: !ownedTokenIds.length },
   ]
 
