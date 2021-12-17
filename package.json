@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false BUILD_PATH='./build_TEMP' react-scripts build && rm -rf build && mv build_TEMP build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npx hardhat run scripts/deploy.js --network localhost"
