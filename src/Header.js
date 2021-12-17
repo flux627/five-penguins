@@ -62,7 +62,7 @@ function Header() {
     let owners = []
     const perPage = 800
     for (let i = 0; i < 4; i++) {
-      const [pageRaw, length] = await fivePenguins.reader.tokenOwners(i * perPage + 1, perPage + 1)
+      const [pageRaw, length] = await fivePenguins.reader.tokenOwners(i * perPage + 1, perPage)
       const page = pageRaw.slice(0, length)
       owners = [...owners, ...page]
       if (length.lt(perPage)) break
