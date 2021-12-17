@@ -286,7 +286,7 @@ library Address {
      * _Available since v3.1._
      */
     function functionCall(address target, bytes memory data) internal returns (bytes memory) {
-      return functionCall(target, data, "Address: low-level call failed");
+        return functionCall(target, data, "Address: low-level call failed");
     }
 
     /**
@@ -573,8 +573,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      */
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return interfaceId == type(IERC721).interfaceId
-            || interfaceId == type(IERC721Metadata).interfaceId
-            || super.supportsInterface(interfaceId);
+        || interfaceId == type(IERC721Metadata).interfaceId
+        || super.supportsInterface(interfaceId);
     }
 
     /**
@@ -616,8 +616,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0
-            ? string(abi.encodePacked(baseURI, tokenId.toString()))
-            : '';
+        ? string(abi.encodePacked(baseURI, tokenId.toString()))
+        : '';
     }
 
     /**
@@ -860,7 +860,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * @return bool whether the call correctly returned the expected magic value
      */
     function _checkOnERC721Received(address from, address to, uint256 tokenId, bytes memory _data)
-        private returns (bool)
+    private returns (bool)
     {
         if (to.isContract()) {
             try IERC721Receiver(to).onERC721Received(_msgSender(), from, tokenId, _data) returns (bytes4 retval) {
@@ -1010,7 +1010,7 @@ contract FivePenguins is ERC721, ReentrancyGuard {
     function baseURI() public view returns (string memory) {
         return _baseURI();
     }
-  
+
     function _baseURI() internal view override returns (string memory) {
         return uri;
     }
@@ -1065,40 +1065,40 @@ contract FivePenguins is ERC721, ReentrancyGuard {
         payable(owner).transfer(address(this).balance);
     }
 
-    function setPresaleEnabled(bool to) public {
+    function setPresaleEnabled(bool to) external {
         require(msg.sender == owner || admins[msg.sender], "Only owner or admin can change presale state");
         require(!saleEnabled, "Cannot change presale state while public sale is live");
         require(totalSupply != MAX_SUPPLY, "Cannot change presale state after selling out");
         presaleEnabled = to;
     }
 
-    function setSaleEnabled(bool to) public {
+    function setSaleEnabled(bool to) external {
         require(msg.sender == owner || admins[msg.sender], "Only owner or admin can change sale state");
         require(presaleEnabled, "Presale must be live in order to turn on public sale");
         require(totalSupply != MAX_SUPPLY, "Cannot change sale state after selling out");
         saleEnabled = to;
     }
 
-    function setPrice(uint256 to) public {
+    function setPrice(uint256 to) external {
         require(msg.sender == owner || admins[msg.sender], "Only owner or admin can set prices");
         price = to;
     }
 
-    function addToWhitelist(address[] calldata addresses) public {
+    function addToWhitelist(address[] calldata addresses) external {
         require(msg.sender == owner || admins[msg.sender], "Only owner or admin can add to whitelist");
         for (uint i = 0; i < addresses.length; i++) {
             whitelist[addresses[i]] = true;
         }
     }
 
-    function removeFromWhitelist(address[] calldata addresses) public {
+    function removeFromWhitelist(address[] calldata addresses) external {
         require(msg.sender == owner || admins[msg.sender], "Only owner or admin can remove from whitelist");
         for (uint i = 0; i < addresses.length; i++) {
             whitelist[addresses[i]] = false;
         }
     }
 
-    function addAdmins(address[] calldata addresses) public {
+    function addAdmins(address[] calldata addresses) external {
         require(msg.sender == owner, "Only owner can add administrators");
         require(!adminsLocked, "Cannot change administrators while locked");
         for (uint i = 0; i < addresses.length; i++) {
@@ -1106,7 +1106,7 @@ contract FivePenguins is ERC721, ReentrancyGuard {
         }
     }
 
-    function removeAdmins(address[] calldata addresses) public {
+    function removeAdmins(address[] calldata addresses) external {
         require(msg.sender == owner, "Only owner can remove administrators");
         require(!adminsLocked, "Cannot change administrators while locked");
         for (uint i = 0; i < addresses.length; i++) {
@@ -1114,7 +1114,7 @@ contract FivePenguins is ERC721, ReentrancyGuard {
         }
     }
 
-    function setAdminsLock(bool to) public {
+    function setAdminsLock(bool to) external {
         require(msg.sender == owner, "Only owner can set admin lock state");
         adminsLocked = to;
     }
@@ -1127,5 +1127,14 @@ contract FivePenguins is ERC721, ReentrancyGuard {
             length++;
         }
         return (addresses, length);
+    }
+
+    function airdrop(address[] calldata addresses) external {
+        require(msg.sender == owner, "Only owner can airdrop");
+        for (uint256 i = 0; i < addresses.length; i++) {
+            _mint(addresses[i], i + 1);
+            totalSupply++;
+            if (!freeMintClaimed[addresses[i]]) freeMintClaimed[addresses[i]] = true;
+        }
     }
 }
