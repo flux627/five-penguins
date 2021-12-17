@@ -189,7 +189,13 @@ function MintSection() {
     </div>
   } else if (saleStatus === 'soldOut') {
     mintSection = <div>
-      <SoldOut>Five Penguins is sold out!<br /><A target={'_blank'} rel={'nofollow'} href={`https://opensea.io/collection/fivepenguins`}>Head over to OpenSea for a chance at secondary sales.</A></SoldOut>
+      <SoldOut>
+        <SoldOutTitle>Five Penguins is sold out!</SoldOutTitle>
+        Official secondary markets:
+        <SoldOutLinks>
+          <A target={'_blank'} rel={'nofollow'} href={`https://opensea.io/collection/fivepenguins`}>OpenSea</A> <A target={'_blank'} rel={'nofollow'} href={`https://niftygateway.com/marketplace?collectible=0x697e0a5e2a6be117760d192a03fac688e774efcf`}>Nifty Gateway</A>
+        </SoldOutLinks>
+      </SoldOut>
     </div>
   } else if (saleStatus === 'presale') {
     mintSection = <div>
@@ -389,9 +395,26 @@ const FreeMint = styled.div`
 `
 
 const SoldOut = styled.div`
-  font-size: 24px;
+  font-size: 18px;
+  line-height: 1.5em;
+`
+
+const SoldOutTitle = styled.div`
+  font-size: 32px;
   font-weight: bold;
   line-height: 1.5em;
+  margin-bottom: 20px;
+`
+
+const SoldOutLinks = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5em;
+  margin-bottom: 20px;
+  
+  a {
+    margin: 0 8px;
+  }
 `
 
 export default MintSection
