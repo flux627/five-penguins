@@ -189,8 +189,7 @@ function MintSection() {
     </div>
   } else if (saleStatus === 'soldOut') {
     mintSection = <div>
-      Five Penguins is sold out.
-      <A href={`https://opensea.io/collection/${process.env.REACT_APP_OPENSEA_USERNAME}`}>Head over to OpenSea for a chance at secondary sales.</A>
+      <SoldOut>Five Penguins is sold out!<br /><A target={'_blank'} rel={'nofollow'} href={`https://opensea.io/collection/fivepenguins`}>Head over to OpenSea for a chance at secondary sales.</A></SoldOut>
     </div>
   } else if (saleStatus === 'presale') {
     mintSection = <div>
@@ -387,6 +386,12 @@ const FreeMint = styled.div`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+`
+
+const SoldOut = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.5em;
 `
 
 export default MintSection
