@@ -42,7 +42,7 @@ function Header() {
     })
   }
 
-  const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider)
+  const fivePenguins = createContractHelper(fivePengiunsAddress, FivePenguinsABI.abi, provider, !activeAddress)
   const onCorrectChain = !chainId || chainId === correctChainId
 
   useEffect(() => {
