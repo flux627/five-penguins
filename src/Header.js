@@ -17,6 +17,7 @@ function Header() {
   const [ownedTokenIds, setOwnedTokenIds] = useState([])
 
   const NAV_LINKS = [
+    { text: 'Visualizer', href: 'https://fivepenguins.party', targetBlank: true },
     { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
     { text: 'OpenSea', href: 'https://opensea.io/collection/fivepenguins', targetBlank: true },
     { text: 'Nifty Gateway', href: 'https://niftygateway.com/marketplace?collectible=0x697e0a5e2a6be117760d192a03fac688e774efcf', targetBlank: true },
@@ -128,15 +129,15 @@ const TopLinks = styled.div`
   padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 5%;
+  gap: 3%;
   height: 73px;
 
-  @media (max-width: 624px) {
+  @media (max-width: 804px) {
       padding: 0 20px;
     }
 
   .desktopNav {
-    @media (max-width: 624px) {
+    @media (max-width: 804px) {
       display: none;
     }
   }
@@ -146,7 +147,7 @@ const HeaderLoop = styled.video`
   width: 100%;
   border-radius: 20px;
   margin-bottom: 15px;
-  @media (max-width: 624px) {
+  @media (max-width: 805px) {
     margin-top: 15px;
   }
 `;
@@ -163,7 +164,7 @@ const Nav = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  @media screen and (min-width: 625px) {
+  @media screen and (min-width: 805px) {
     display: none;
   }
 `;
