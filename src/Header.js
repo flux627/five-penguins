@@ -20,6 +20,7 @@ function Header() {
     { text: 'Visualizer', href: 'https://fivepenguins.party', targetBlank: true },
     { text: 'Twitter', href: 'https://twitter.com/shapiro500', targetBlank: true },
     { text: 'OpenSea', href: 'https://opensea.io/collection/fivepenguins', targetBlank: true },
+    { text: 'Merch', href: 'https://fivepenguins.myshopify.com/', targetBlank: true },
     { text: 'Nifty Gateway', href: 'https://niftygateway.com/marketplace?collectible=0x697e0a5e2a6be117760d192a03fac688e774efcf', targetBlank: true },
     { text: 'My Squads', href: '#', onClick: openPngModal, hide: !ownedTokenIds.length },
   ]
